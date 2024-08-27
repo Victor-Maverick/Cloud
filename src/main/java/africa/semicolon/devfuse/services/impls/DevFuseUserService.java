@@ -1,7 +1,11 @@
 package africa.semicolon.devfuse.services.impls;
 
+import africa.semicolon.devfuse.dtos.requests.LoginRequest;
 import africa.semicolon.devfuse.dtos.requests.RegisterRequest;
+import africa.semicolon.devfuse.dtos.responses.LoginResponse;
 import africa.semicolon.devfuse.dtos.responses.RegisterResponse;
+import africa.semicolon.devfuse.exceptions.EmailNotFoundException;
+import africa.semicolon.devfuse.exceptions.IncorrectPasswordException;
 import africa.semicolon.devfuse.exceptions.UserExistsException;
 import africa.semicolon.devfuse.models.User;
 import africa.semicolon.devfuse.repositories.UserRepository;
@@ -29,6 +33,26 @@ public class DevFuseUserService implements UserService {
         response.setMessage("Welcome "+user.getEmail()+", registration successful");
         return response;
     }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        User user = findUserBy(request.getEmail());
+        if(!user.getPassword().equals(request.getPassword())){
+            throw new IncorrectPasswordException("Password is incorrect");
+        }
+        LoginResponse loginResponse = mapper.map(request, LoginResponse.class);
+        user.setLoggedIn(true);
+        userRepository.save(user);
+        return loginResponse;
+    }
+
+    @Override
+    public  User findUserBy(String email) {
+        User user = userRepository.findByEmail(email);
+        if(user == null) throw new EmailNotFoundException(email +" not found");
+        return user;
+    }
+
 
     private void validateEmail(String email) {
         boolean existsByEmail = userRepository.existsByEmail(email);
