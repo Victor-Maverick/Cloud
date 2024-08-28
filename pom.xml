@@ -75,7 +75,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>africa.semicolon.DevFuseApplication</mainClass>
+							<mainClass>africa.semicolon.devfuse.DevFuseApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
