@@ -30,6 +30,7 @@ public class DevFuseUserService implements UserService {
         user.setLastName(request.getLastName());
         userRepository.save(user);
         RegisterResponse response = mapper.map(user, RegisterResponse.class);
+        response.setId(user.getId());
         response.setMessage("Welcome "+user.getEmail()+", registration successful");
         return response;
     }

@@ -8,6 +8,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RegisterResponse {
-    private String id;
+    private Long id;
     private String message;
 }
